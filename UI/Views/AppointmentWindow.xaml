@@ -5,76 +5,95 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DentalClinic.UI.Views"
         mc:Ignorable="d"
-        Title="Новая запись" Height="480" Width="500"
+        Title="Новая запись"
+        Height="520"
+        Width="500"
         WindowStartupLocation="CenterOwner"
         Background="{StaticResource BackgroundColor}"
         ResizeMode="NoResize">
+
     <Grid Margin="30">
         <Border Background="{StaticResource CardColor}"
-               CornerRadius="12"
-               Padding="30">
+                CornerRadius="12"
+                Padding="30">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.15" Color="Black"/>
+                <DropShadowEffect BlurRadius="20"
+                                  ShadowDepth="5"
+                                  Opacity="0.15"
+                                  Color="Black"/>
             </Border.Effect>
-            
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Заголовок -->
-                <TextBlock Text="Новая запись"
-                          FontSize="22"
-                          FontWeight="Bold"
-                          Foreground="{StaticResource PrimaryColor}"
-                          Margin="0,0,0,25"/>
+                <TextBlock Grid.Row="0"
+                           Text="Новая запись"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource PrimaryColor}"
+                           Margin="0,0,0,25"/>
 
                 <!-- Форма -->
-                <StackPanel Grid.Row="1">
-                    <Label Content="Врач:" Style="{StaticResource ModernLabel}"/>
-                    <ComboBox x:Name="DoctorBox" 
-                             Height="42"
-                             Style="{StaticResource ModernComboBox}"
-                             Margin="0,0,0,15"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Label Content="Пациент:" Style="{StaticResource ModernLabel}"/>
-                    <ComboBox x:Name="PatientBox" 
-                             Height="42"
-                             Style="{StaticResource ModernComboBox}"
-                             Margin="0,0,0,15"/>
+                    <!-- Левая колонка -->
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Врач:" Style="{StaticResource ModernLabel}"/>
+                        <ComboBox x:Name="DoctorBox"
+                                  Height="42"
+                                  Style="{StaticResource ModernComboBox}"
+                                  Margin="0,0,0,15"/>
 
-                    <Label Content="Дата начала:" Style="{StaticResource ModernLabel}"/>
-                    <DatePicker x:Name="DatePickerStart" 
-                               Width="200"
-                               Style="{StaticResource ModernDatePicker}"
-                               Margin="0,0,0,15"/>
+                        <Label Content="Пациент:" Style="{StaticResource ModernLabel}"/>
+                        <ComboBox x:Name="PatientBox"
+                                  Height="42"
+                                  Style="{StaticResource ModernComboBox}"
+                                  Margin="0,0,0,15"/>
+                    </StackPanel>
 
-                    <Label Content="Время начала:" Style="{StaticResource ModernLabel}"/>
-                    <TextBox x:Name="TimeStartBox" 
-                            Height="42"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="09:00"
-                            Margin="0,0,0,15"/>
+                    <!-- Правая колонка -->
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Время начала:" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="TimeStartBox"
+                                 Height="42"
+                                 Style="{StaticResource ModernTextBox}"
+                                 Text="09:00"
+                                 Margin="0,0,0,15"/>
 
-                    <Label Content="Длительность (мин):" Style="{StaticResource ModernLabel}"/>
-                    <TextBox x:Name="DurationBox" 
-                            Height="42"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="30"/>
-                </StackPanel>
+                        <Label Content="Длительность (мин):" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="DurationBox"
+                                 Height="42"
+                                 Style="{StaticResource ModernTextBox}"
+                                 Text="30"
+                                 Margin="0,0,0,15"/>
 
-                <!-- Кнопки -->
-                <StackPanel Grid.Row="2" 
-                           Orientation="Horizontal" 
-                           HorizontalAlignment="Right"
-                           Margin="0,25,0,0">
+                        <!-- ПЕРЕНЕСЛИ СЮДА -->
+                        <Label Content="Дата начала:" Style="{StaticResource ModernLabel}"/>
+                        <DatePicker x:Name="DatePickerStart"
+                                    Style="{StaticResource ModernDatePicker}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Кнопка -->
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0,20,0,0">
                     <Button Content="Создать"
-                           Style="{StaticResource ModernButton}"
-                           Width="130"
-                           Height="42"
-                           Click="Create_Click"/>
+                            Style="{StaticResource ModernButton}"
+                            Width="130"
+                            Height="42"
+                            Click="Create_Click"/>
                 </StackPanel>
             </Grid>
         </Border>

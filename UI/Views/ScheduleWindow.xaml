@@ -1,75 +1,90 @@
 ﻿<Window x:Class="DentalClinic.UI.Views.ScheduleWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Добавить в график" Height="480" Width="500"
+        Title="Добавить в график"
+        Height="480" Width="500"
         WindowStartupLocation="CenterOwner"
         Background="{StaticResource BackgroundColor}"
         ResizeMode="NoResize">
+
     <Grid Margin="30">
         <Border Background="{StaticResource CardColor}"
-               CornerRadius="12"
-               Padding="30">
+                CornerRadius="12"
+                Padding="30">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.15" Color="Black"/>
             </Border.Effect>
-            
+
             <Grid>
+                <!-- чтобы контент не тянулся и не съедал кнопку -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Заголовок -->
-                <TextBlock Text="Добавить в график"
-                          FontSize="22"
-                          FontWeight="Bold"
-                          Foreground="{StaticResource PrimaryColor}"
-                          Margin="0,0,0,25"/>
+                <TextBlock Grid.Row="0"
+                           Text="Добавить в график"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource PrimaryColor}"
+                           Margin="0,0,0,25"/>
 
-                <!-- Форма -->
-                <StackPanel Grid.Row="1">
-                    <Label Content="Врач:" Style="{StaticResource ModernLabel}"/>
-                    <ComboBox x:Name="DoctorBox" 
-                             Height="42"
-                             Style="{StaticResource ModernComboBox}"
-                             Margin="0,0,0,15"/>
+                <!-- Форма (2 колонки) -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Label Content="Дата:" Style="{StaticResource ModernLabel}"/>
-                    <DatePicker x:Name="DatePicker" 
-                               Width="200"
-                               Style="{StaticResource ModernDatePicker}"
-                               Margin="0,0,0,15"/>
+                    <!-- Левая колонка -->
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Врач:" Style="{StaticResource ModernLabel}"/>
+                        <ComboBox x:Name="DoctorBox"
+                                  Height="42"
+                                  Style="{StaticResource ModernComboBox}"
+                                  Margin="0,0,0,15"/>
 
-                    <Label Content="Время с:" Style="{StaticResource ModernLabel}"/>
-                    <TextBox x:Name="TimeFromBox" 
-                            Height="42"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="09:00"
-                            Margin="0,0,0,15"/>
+                        <Label Content="Дата:" Style="{StaticResource ModernLabel}"/>
+                        <DatePicker x:Name="DatePicker"
+                                    Style="{StaticResource ModernDatePicker}"
+                                    Margin="0,0,0,15"/>
 
-                    <Label Content="Время до:" Style="{StaticResource ModernLabel}"/>
-                    <TextBox x:Name="TimeToBox" 
-                            Height="42"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="18:00"
-                            Margin="0,0,0,15"/>
+                        <CheckBox x:Name="IsDayOffCheck"
+                                  Content="Выходной день"
+                                  Style="{StaticResource ModernCheckBox}"/>
+                    </StackPanel>
 
-                    <CheckBox x:Name="IsDayOffCheck" 
-                             Content="Выходной день"
-                             Style="{StaticResource ModernCheckBox}"/>
-                </StackPanel>
+                    <!-- Правая колонка -->
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Время с:" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="TimeFromBox"
+                                 Height="42"
+                                 Style="{StaticResource ModernTextBox}"
+                                 Text="09:00"
+                                 Margin="0,0,0,15"/>
 
-                <!-- Кнопки -->
-                <StackPanel Grid.Row="2" 
-                           Orientation="Horizontal" 
-                           HorizontalAlignment="Right"
-                           Margin="0,25,0,0">
+                        <Label Content="Время до:" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="TimeToBox"
+                                 Height="42"
+                                 Style="{StaticResource ModernTextBox}"
+                                 Text="18:00"
+                                 Margin="0,0,0,15"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Кнопка -->
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0,25,0,0">
                     <Button Content="Сохранить"
-                           Style="{StaticResource ModernButton}"
-                           Width="130"
-                           Height="42"
-                           Click="Save_Click"/>
+                            Style="{StaticResource ModernButton}"
+                            Width="130"
+                            Height="42"
+                            Click="Save_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
