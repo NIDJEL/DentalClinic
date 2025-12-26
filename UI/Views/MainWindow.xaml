@@ -145,6 +145,7 @@
         <Grid Grid.Column="1" Margin="25">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -218,8 +219,54 @@
                 </StackPanel>
             </Border>
 
+            <!-- Панель действий -->
+            <Border x:Name="ActionPanel"
+                   Grid.Row="1"
+                   Background="{StaticResource CardColor}"
+                   CornerRadius="10"
+                   Padding="20"
+                   Margin="0,0,0,15"
+                   Visibility="Collapsed">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1" Color="Black"/>
+                </Border.Effect>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock x:Name="TableTitle"
+                              Grid.Column="0"
+                              FontSize="20"
+                              FontWeight="Bold"
+                              Foreground="{StaticResource PrimaryColor}"
+                              VerticalAlignment="Center"/>
+                    
+                    <Button x:Name="BtnDelete"
+                           Grid.Column="1"
+                           Content="Удалить выбранные"
+                           Height="40"
+                           Padding="20,10"
+                           HorizontalAlignment="Right"
+                           Click="BtnDelete_Click">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource ModernButton}">
+                                <Setter Property="Background" Value="#DC3545"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#C82333"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Border>
+
             <!-- Основная таблица -->
-            <Border Grid.Row="1"
+            <Border Grid.Row="2"
                    Background="{StaticResource CardColor}"
                    CornerRadius="10"
                    Padding="0">

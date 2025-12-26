@@ -11,6 +11,7 @@ namespace DentalClinic.UI.Views
     {
         private readonly AppUser _currentUser;
         private readonly ReportRepository _reportRepo = new ReportRepository();
+        private string _currentViewMode = ""; // "doctors", "patients", "services", "appointments", "schedule"
 
 
         public MainWindow(AppUser user)
@@ -124,12 +125,18 @@ namespace DentalClinic.UI.Views
         private void BtnDoctors_Click(object sender, RoutedEventArgs e)
         {
             ReportPanel.Visibility = Visibility.Collapsed;
+            ActionPanel.Visibility = Visibility.Visible;
+            TableTitle.Text = "Врачи";
+            _currentViewMode = "doctors";
             LoadDoctors();
         }
 
         private void BtnPatients_Click(object sender, RoutedEventArgs e)
         {
             ReportPanel.Visibility = Visibility.Collapsed;
+            ActionPanel.Visibility = Visibility.Visible;
+            TableTitle.Text = "Пациенты";
+            _currentViewMode = "patients";
             var repo = new PatientRepository();
             MainGrid.ItemsSource = repo.GetAll();
         }
@@ -164,6 +171,9 @@ namespace DentalClinic.UI.Views
         private void BtnServices_Click(object sender, RoutedEventArgs e)
         {
             ReportPanel.Visibility = Visibility.Collapsed;
+            ActionPanel.Visibility = Visibility.Visible;
+            TableTitle.Text = "Услуги";
+            _currentViewMode = "services";
             var repo = new ServiceRepository();
             MainGrid.ItemsSource = repo.GetAll();
         }
@@ -171,12 +181,18 @@ namespace DentalClinic.UI.Views
         private void BtnAppointments_Click(object sender, RoutedEventArgs e)
         {
             ReportPanel.Visibility = Visibility.Collapsed;
+            ActionPanel.Visibility = Visibility.Visible;
+            TableTitle.Text = "Приёмы";
+            _currentViewMode = "appointments";
             LoadAppointments();
         }
 
         private void BtnSchedule_Click(object sender, RoutedEventArgs e)
         {
             ReportPanel.Visibility = Visibility.Collapsed;
+            ActionPanel.Visibility = Visibility.Visible;
+            TableTitle.Text = "График врачей";
+            _currentViewMode = "schedule";
             var repo = new ScheduleRepository();
 
             int? doctorIdFilter = null;
@@ -240,6 +256,8 @@ namespace DentalClinic.UI.Views
         private void BtnReports_Click(object sender, RoutedEventArgs e)
         {
             ReportPanel.Visibility = Visibility.Visible;
+            ActionPanel.Visibility = Visibility.Collapsed;
+            _currentViewMode = "reports";
             var today = DateTime.Today;
             if (ReportMonthPicker != null)
                 ReportMonthPicker.SelectedDate = today;
@@ -287,6 +305,136 @@ namespace DentalClinic.UI.Views
             if (win.ShowDialog() == true)
             {
                 BtnSchedule_Click(null, null);
+            }
+        }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItems = MainGrid.SelectedItems;
+            if (selectedItems.Count == 0)
+            {
+                MessageBox.Show("Выберите записи для удаления.", "Внимание",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"Вы уверены, что хотите удалить выбранные записи ({selectedItems.Count} шт.)?",
+                "Подтверждение удаления",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                switch (_currentViewMode)
+                {
+                    case "doctors":
+                        DeleteDoctors(selectedItems);
+                        break;
+                    case "patients":
+                        DeletePatients(selectedItems);
+                        break;
+                    case "services":
+                        DeleteServices(selectedItems);
+                        break;
+                    case "appointments":
+                        DeleteAppointments(selectedItems);
+                        break;
+                    case "schedule":
+                        DeleteSchedules(selectedItems);
+                        break;
+                    default:
+                        MessageBox.Show("Неизвестный режим просмотра.", "Ошибка",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                }
+
+                // Обновляем отображение
+                RefreshCurrentView();
+
+                MessageBox.Show("Записи успешно удалены.", "Успех",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show($"Ошибка при удалении: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void DeleteDoctors(System.Collections.IList selectedItems)
+        {
+            var repo = new DoctorRepository();
+            foreach (Doctor doctor in selectedItems)
+            {
+                repo.Delete(doctor.DoctorId);
+            }
+        }
+
+        private void DeletePatients(System.Collections.IList selectedItems)
+        {
+            var repo = new PatientRepository();
+            foreach (Patient patient in selectedItems)
+            {
+                repo.Delete(patient.PatientId);
+            }
+        }
+
+        private void DeleteServices(System.Collections.IList selectedItems)
+        {
+            var repo = new ServiceRepository();
+            foreach (ServiceWithCategory service in selectedItems)
+            {
+                repo.Delete(service.ServiceId);
+            }
+        }
+
+        private void DeleteAppointments(System.Collections.IList selectedItems)
+        {
+            var repo = new AppointmentRepository();
+            foreach (AppointmentView appointment in selectedItems)
+            {
+                repo.Delete(appointment.AppointmentId);
+            }
+        }
+
+        private void DeleteSchedules(System.Collections.IList selectedItems)
+        {
+            var repo = new ScheduleRepository();
+            foreach (DoctorScheduleView schedule in selectedItems)
+            {
+                repo.Delete(schedule.ScheduleId);
+            }
+        }
+
+        private void RefreshCurrentView()
+        {
+            switch (_currentViewMode)
+            {
+                case "doctors":
+                    LoadDoctors();
+                    break;
+                case "patients":
+                    var patientRepo = new PatientRepository();
+                    MainGrid.ItemsSource = patientRepo.GetAll();
+                    break;
+                case "services":
+                    var serviceRepo = new ServiceRepository();
+                    MainGrid.ItemsSource = serviceRepo.GetAll();
+                    break;
+                case "appointments":
+                    LoadAppointments();
+                    break;
+                case "schedule":
+                    var scheduleRepo = new ScheduleRepository();
+                    int? doctorIdFilter = null;
+                    if (_currentUser.Role == "doctor" && _currentUser.DoctorId.HasValue)
+                        doctorIdFilter = _currentUser.DoctorId.Value;
+                    MainGrid.ItemsSource = scheduleRepo.GetDoctorSchedule(doctorIdFilter);
+                    break;
             }
         }
     }

@@ -14,7 +14,7 @@ namespace DentalClinic.Data
             using var conn = DbConnection.CreateConnection();
 
             var sql =
-                "SELECT d.full_name, ds.work_date, ds.time_from, ds.time_to, ds.is_day_off " +
+                "SELECT ds.schedule_id, d.full_name, ds.work_date, ds.time_from, ds.time_to, ds.is_day_off " +
                 "FROM doctor_schedule ds " +
                 "JOIN doctor d ON d.doctor_id = ds.doctor_id ";
 
@@ -34,11 +34,12 @@ namespace DentalClinic.Data
             {
                 result.Add(new DoctorScheduleView
                 {
-                    DoctorName = reader.GetString(0),
-                    WorkDate = reader.GetDateTime(1),
-                    TimeFrom = reader.IsDBNull(2) ? (TimeSpan?)null : reader.GetTimeSpan(2),
-                    TimeTo = reader.IsDBNull(3) ? (TimeSpan?)null : reader.GetTimeSpan(3),
-                    IsDayOff = reader.GetBoolean(4)
+                    ScheduleId = reader.GetInt32(0),
+                    DoctorName = reader.GetString(1),
+                    WorkDate = reader.GetDateTime(2),
+                    TimeFrom = reader.IsDBNull(3) ? (TimeSpan?)null : reader.GetTimeSpan(3),
+                    TimeTo = reader.IsDBNull(4) ? (TimeSpan?)null : reader.GetTimeSpan(4),
+                    IsDayOff = reader.GetBoolean(5)
                 });
             }
 
@@ -64,6 +65,17 @@ namespace DentalClinic.Data
 
             cmd.Parameters.AddWithValue("dayoff", schedule.IsDayOff);
 
+            cmd.ExecuteNonQuery();
+        }
+
+        public void Delete(int scheduleId)
+        {
+            using var conn = DbConnection.CreateConnection();
+            using var cmd = new NpgsqlCommand(
+                "DELETE FROM doctor_schedule WHERE schedule_id = @id",
+                conn);
+
+            cmd.Parameters.AddWithValue("id", scheduleId);
             cmd.ExecuteNonQuery();
         }
     }

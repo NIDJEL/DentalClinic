@@ -340,7 +340,7 @@
             <Setter Property="AlternatingRowBackground" Value="#F8F9FA"/>
             <Setter Property="GridLinesVisibility" Value="None"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionMode" Value="Extended"/>
             <Setter Property="SelectionUnit" Value="FullRow"/>
             <Setter Property="AutoGenerateColumns" Value="True"/>
             <Setter Property="CanUserAddRows" Value="False"/>

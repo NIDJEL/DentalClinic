@@ -2,6 +2,7 @@
 {
     public class DoctorScheduleView
     {
+        public int ScheduleId { get; set; }
         public string DoctorName { get; set; }
         public DateTime WorkDate { get; set; }
         public TimeSpan? TimeFrom { get; set; }

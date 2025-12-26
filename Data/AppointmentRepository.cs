@@ -75,5 +75,16 @@ namespace DentalClinic.Data
 
             cmd.ExecuteNonQuery();
         }
+
+        public void Delete(int appointmentId)
+        {
+            using var conn = DbConnection.CreateConnection();
+            using var cmd = new NpgsqlCommand(
+                "DELETE FROM appointment WHERE appointment_id = @id",
+                conn);
+
+            cmd.Parameters.AddWithValue("id", appointmentId);
+            cmd.ExecuteNonQuery();
+        }
     }
 }
