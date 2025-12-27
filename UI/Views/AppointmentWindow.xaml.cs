@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows;
-using DentalClinic.Data;
+﻿using DentalClinic.Data;
 using DentalClinic.Models;
+using System.Windows;
 
 namespace DentalClinic.UI.Views
 {
@@ -34,7 +33,7 @@ namespace DentalClinic.UI.Views
             if (_doctorId.HasValue)
             {
                 DoctorBox.SelectedValue = _doctorId.Value;
-                DoctorBox.IsEnabled = false; // врач не может выбрать другого врача
+                DoctorBox.IsEnabled = false;
             }
         }
 

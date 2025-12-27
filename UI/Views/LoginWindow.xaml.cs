@@ -1,6 +1,6 @@
 ﻿using DentalClinic.Data;
-using System.Windows;
 using Npgsql;
+using System.Windows;
 
 namespace DentalClinic.UI.Views
 {
@@ -17,7 +17,6 @@ namespace DentalClinic.UI.Views
             var password = PasswordBox.Password;
             var dbPassword = DbPasswordBox.Password;
 
-            // Устанавливаем пароль БД перед подключением
             if (!string.IsNullOrEmpty(dbPassword))
             {
                 Database.DbConnection.SetDbPassword(dbPassword);
@@ -42,7 +41,7 @@ namespace DentalClinic.UI.Views
             catch (NpgsqlException ex)
             {
                 string errorMessage = "Ошибка подключения к базе данных.\n";
-                
+
                 if (ex.Message.Contains("password") || ex.Message.Contains("authentication"))
                 {
                     errorMessage += "Неверный пароль базы данных.";
@@ -55,7 +54,7 @@ namespace DentalClinic.UI.Views
                 {
                     errorMessage += $"Детали: {ex.Message}";
                 }
-                
+
                 MessageBox.Show(errorMessage, "Ошибка подключения",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }

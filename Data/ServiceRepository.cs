@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DentalClinic.Database;
+﻿using DentalClinic.Database;
 using DentalClinic.Models;
 using Npgsql;
 

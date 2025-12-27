@@ -1,8 +1,7 @@
 ﻿using DentalClinic.Data;
 using DentalClinic.Models;
-using Microsoft.Win32;
 using DentalClinic.Services;
-
+using Microsoft.Win32;
 using System.Windows;
 
 namespace DentalClinic.UI.Views
@@ -11,7 +10,7 @@ namespace DentalClinic.UI.Views
     {
         private readonly AppUser _currentUser;
         private readonly ReportRepository _reportRepo = new ReportRepository();
-        private string _currentViewMode = ""; // "doctors", "patients", "services", "appointments", "schedule"
+        private string _currentViewMode = "";
 
 
         public MainWindow(AppUser user)
@@ -21,7 +20,6 @@ namespace DentalClinic.UI.Views
 
             Title = $"Стоматологический кабинет – {_currentUser.Username} ({_currentUser.Role})";
 
-            // Настройка растягивания колонок DataGrid
             MainGrid.AutoGeneratingColumn += MainGrid_AutoGeneratingColumn;
 
             ApplyRolePermissions();
@@ -29,14 +27,12 @@ namespace DentalClinic.UI.Views
 
         private void MainGrid_AutoGeneratingColumn(object? sender, System.Windows.Controls.DataGridAutoGeneratingColumnEventArgs e)
         {
-            // Для колонок с ID устанавливаем меньшую ширину
             if (e.Column.Header != null && e.Column.Header.ToString()!.ToLower().Contains("id"))
             {
                 e.Column.Width = new System.Windows.Controls.DataGridLength(80, System.Windows.Controls.DataGridLengthUnitType.Pixel);
             }
             else
             {
-                // Для остальных колонок - равномерное распределение
                 e.Column.Width = new System.Windows.Controls.DataGridLength(1, System.Windows.Controls.DataGridLengthUnitType.Star);
             }
         }
@@ -45,7 +41,6 @@ namespace DentalClinic.UI.Views
         {
             if (_currentUser.Role == "doctor")
             {
-                // скрытие разделов для врача
                 BtnDoctors.Visibility = Visibility.Collapsed;
                 BtnAddDoctor.Visibility = Visibility.Collapsed;
                 BtnServices.Visibility = Visibility.Collapsed;
@@ -54,7 +49,6 @@ namespace DentalClinic.UI.Views
                 BtnAddService.Visibility = Visibility.Collapsed;
                 BtnAddSchedule.Visibility = Visibility.Collapsed;
 
-                // Скрытие заголовков разделов, где все кнопки скрыты
                 HeaderDoctors.Visibility = Visibility.Collapsed;
                 HeaderServices.Visibility = Visibility.Collapsed;
                 HeaderReports.Visibility = Visibility.Collapsed;
@@ -88,18 +82,14 @@ namespace DentalClinic.UI.Views
 
         private void LoadReportForMonth(DateTime monthDate)
         {
-            // Все время
             var allList = _reportRepo.GetDoctorIncomeReport();
             var totalAll = allList.Sum(r => r.TotalIncome);
 
-            // За выбранный месяц
             var monthList = _reportRepo.GetDoctorIncomeReportByMonth(monthDate.Year, monthDate.Month);
             var totalMonth = monthList.Sum(r => r.TotalIncome);
 
-            // Показываем в таблице данные за месяц
             MainGrid.ItemsSource = monthList;
 
-            // Обновляем подписи
             LblTotalOverall.Text = totalAll.ToString("N2");
             LblTotalMonth.Text = totalMonth.ToString("N2");
         }
@@ -117,10 +107,6 @@ namespace DentalClinic.UI.Views
             var date = ReportMonthPicker.SelectedDate.Value;
             LoadReportForMonth(date);
         }
-
-
-
-        // Кнопки меню
 
         private void BtnDoctors_Click(object sender, RoutedEventArgs e)
         {
@@ -213,7 +199,6 @@ namespace DentalClinic.UI.Views
 
             var monthDate = ReportMonthPicker.SelectedDate.Value;
 
-            // Получаем данные так же, как в LoadReportForMonth
             var allList = _reportRepo.GetDoctorIncomeReport();
             var totalAll = allList.Sum(r => r.TotalIncome);
 
@@ -269,9 +254,6 @@ namespace DentalClinic.UI.Views
         {
             Close();
         }
-
-        // ====== НОВЫЕ ОБРАБОТЧИКИ КНОПОК ДОБАВЛЕНИЯ ======
-
         private void BtnAddPatient_Click(object sender, RoutedEventArgs e)
         {
             ReportPanel.Visibility = Visibility.Collapsed;
@@ -352,7 +334,6 @@ namespace DentalClinic.UI.Views
                         return;
                 }
 
-                // Обновляем отображение
                 RefreshCurrentView();
 
                 MessageBox.Show("Записи успешно удалены.", "Успех",

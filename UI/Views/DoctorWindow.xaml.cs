@@ -1,8 +1,7 @@
-﻿using System;
+﻿using DentalClinic.Data;
+using DentalClinic.Models;
 using System.Globalization;
 using System.Windows;
-using DentalClinic.Data;
-using DentalClinic.Models;
 
 namespace DentalClinic.UI.Views
 {

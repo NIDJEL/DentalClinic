@@ -18,7 +18,7 @@ namespace DentalClinic.Database
             {
                 if (string.IsNullOrEmpty(_dbPassword))
                 {
-                    return BaseConnectionString + ";Password=12345"; // Значение по умолчанию
+                    return BaseConnectionString + ";Password=12345";
                 }
                 return BaseConnectionString + $";Password={_dbPassword}";
             }

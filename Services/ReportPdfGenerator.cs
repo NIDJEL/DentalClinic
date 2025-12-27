@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using DentalClinic.Models;
+﻿using DentalClinic.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.Globalization;
 
 namespace DentalClinic.Services
 {
@@ -30,7 +28,6 @@ namespace DentalClinic.Services
                     page.PageColor(Colors.White);
                     page.DefaultTextStyle(x => x.FontSize(11).FontFamily("Arial"));
 
-                    // HEADER
                     page.Header().Column(col =>
                     {
                         col.Item().Text("РЖД-Медицина | Стоматология")
@@ -47,7 +44,6 @@ namespace DentalClinic.Services
                             .LineColor(Colors.Grey.Lighten2);
                     });
 
-                    // CONTENT
                     page.Content().PaddingVertical(10).Column(col =>
                     {
                         col.Item().Table(table =>
@@ -94,7 +90,6 @@ namespace DentalClinic.Services
                         });
                     });
 
-                    // FOOTER
                     page.Footer().AlignRight().Text(txt =>
                     {
                         txt.Span("Сформировано: ");
